@@ -2,18 +2,21 @@
 # DATA
 #------------------------------------------------------------------------------
 
-    sotu.texts <- quanteda.corpora::data_corpus_sotu$documents
-    sotu.texts$docname <- sotu.texts$`_document`
-    sotu.texts$`_document` <- NULL
+    # sotu.texts <- quanteda.corpora::data_corpus_sotu$documents
+    # sotu.texts$docname <- sotu.texts$`_document`
+    # sotu.texts$`_document` <- NULL
+    sotu.texts <- tidy(quanteda.corpora::data_corpus_sotu) %>% 
+                  mutate(docname = paste0(President, "-", Date, delivery))
+
 
 #------------------------------------------------------------------------------
 # Create DTM
 #------------------------------------------------------------------------------
 
     sotu.dtm <- sotu.texts %>% 
-        mutate(documents = str_replace_all(texts, "[^[:ascii:]]", " ")) %>%
-        mutate(documents = str_replace_all(texts, "[[:punct:]]", " ")) %>%
-        unnest_tokens(word, texts, to_lower = TRUE) %>%
+        mutate(text = str_replace_all(text, "[^[:ascii:]]", " ")) %>%
+        mutate(text = str_replace_all(text, "[[:punct:]]", " ")) %>%
+        unnest_tokens(word, text, to_lower = TRUE) %>%
         anti_join(stop_words) %>%
         filter(!str_detect(word, "[0-9]+") ) %>%
         dplyr::count(docname, word) %>%
@@ -23,7 +26,8 @@
     sotu.dtm <- removeSparseTerms(sotu.dtm, .99) 
 
     # check dims
-    dim(sotu.dtm) # 240 by 13303
+    dim(sotu.dtm) # 241 by 13274
+
 
 ##-----------------------------------------------------------------------------
 #  BUILD Cultural Dimensions
@@ -77,8 +81,9 @@
                         cw = c("nurture parent", "strict father"), 
                         cd = cd, 
                         wv = ft.wv, 
-                        method = "cosine", scale = TRUE,
-                        parallel = TRUE)
+                        method = "cosine", 
+                        scale = TRUE,
+                        parallel = FALSE)
     
     # get correlation between "nurture parent" and "liberal" pole of CDim
     cor(sotu.cmd$cmd.nurture, sotu.cmd$cmd.liberal.pole.7)
@@ -99,16 +104,20 @@
     geom_smooth(aes(color = as.numeric(liberal_dim)), method = "loess", color="#000000",
                 formula = y ~ x, span = .1) +
     geom_point(aes(color = as.numeric(liberal_dim)), size = 2) +
-    ylim(-2.5,2.5) +
+    ylim(-3,3) +
     xlab("Date") +
     ylab('Engagement with "Liberal" Pole') +
     scale_color_gradient2(low = "#8B1A1A", mid="#B2BECC", high = "#003366",
                             name = "", 
-                            limits = c(-2.5,2.5),
-                            breaks = c(-2.5,2.5), labels = c("Conservative", "Liberal")) +
+                            limits = c(-3,3),
+                            breaks = c(-3,3), labels = c("Conservative", "Liberal")) +
     theme(legend.position = "bottom",
             legend.key.size = unit(5, "mm")) 
 
+    png("figures/figure_cmd_sotu_cd.png", 
+        width = 7, height = 5, units = 'in', res = 400)
+    sotu.plot.cd
+    dev.off()
 
     # Over time of "nurture + parent"
     sotu.plot.cw <- sotu.texts %>% 
@@ -117,15 +126,21 @@
     geom_smooth(aes(color = as.numeric(nurture_parent)), method = "loess", color="#000000",
                 formula = y ~ x, span = .1) +
     geom_point(aes(color = as.numeric(nurture_parent)), size = 2) +
-    ylim(-2.5,2.5) +
+    ylim(-3,3) +
     xlab("Date") +
     ylab('Engagement with "Nurture + Parent"') +
     scale_color_gradient2(low = "#fdbf11", mid="#B2BECC", high = "#1696d2",
                             name = "", 
-                            limits = c(-2.5,2.5),
-                            breaks = c(-2.5,2.5), labels = c("", "Nurture + Parent")) +
+                            limits = c(-3,3),
+                            breaks = c(-3,3), labels = c("", "Nurture + Parent")) +
     theme(legend.position = "bottom",
             legend.key.size = unit(5, "mm")) 
+
+
+    png("figures/figure_cmd_sotu_cw.png", 
+        width = 7, height = 5, units = 'in', res = 400)
+    sotu.plot.cw
+    dev.off()
 
 
     png("figures/figure_cmd_sotu_cw_cd.png", 
@@ -153,62 +168,62 @@
           ylab = '"Nurture + Parent"',
           color = "#1696d2") +
           xlim(-3,3) +
-          ylim(-3,3)
+          ylim(-3.5,3.5)
       
     p.sc.1 <- ggscatter(cmd.scatter.df, x = "cmd.full", y = "cmd.1",
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
           xlab = '"Liberal" pole of cultural dimension', 
-          ylab = '"Liberal-Conservative"',
+          ylab = '"Conservative" - "Liberal"',
           color = "#1696d2") +
           xlim(-3,3) +
-          ylim(-3,3)
+          ylim(-3.5,3.5)
 
 
     p.sc.2 <- ggscatter(cmd.scatter.df, x = "cmd.full", y = "cmd.2",
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
           xlab = '"Liberal" pole of cultural dimension', 
-          ylab = '"Progressive-Traditional"',
+          ylab = '"Traditional" - "Progressive"',
           color = "#1696d2") +
           xlim(-3,3) +
-          ylim(-3,3)
+          ylim(-3.5,3.5)
 
     p.sc.3 <- ggscatter(cmd.scatter.df, x = "cmd.full", y = "cmd.3",
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
           xlab = '"Liberal" pole of cultural dimension', 
-          ylab = '"Democrat-Republican"',
+          ylab = '"Republican" - "Democrat"',
           color = "#1696d2") +
           xlim(-3,3) +
-          ylim(-3,3)
+          ylim(-3.5,3.5)
 
     p.sc.4 <- ggscatter(cmd.scatter.df, x = "cmd.full", y = "cmd.4",
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
           xlab = '"Liberal" pole of cultural dimension', 
-          ylab = '"Progressive-Conservative"',
+          ylab = '"Conservative" - "Progressive"',
           color = "#1696d2") +
           xlim(-3,3) +
-          ylim(-3,3)
+          ylim(-3.5,3.5)
 
     p.sc.5 <- ggscatter(cmd.scatter.df, x = "cmd.full", y = "cmd.5",
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
           xlab = '"Liberal" pole of cultural dimension', 
-          ylab = '"Unconventional-Conventional"',
+          ylab = '"Conventional" - "Unconventional"',
           color = "#1696d2") +
           xlim(-3,3) +
-          ylim(-3,3)
+          ylim(-3.5,3.5)
 
     p.sc.6 <- ggscatter(cmd.scatter.df, x = "cmd.full", y = "cmd.6",
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
           xlab = '"Liberal" pole of cultural dimension', 
-          ylab = '"Democratic-Republican"',
+          ylab = '"Republican" - "Democratic"',
           color = "#1696d2") +
           xlim(-3,3) +
-          ylim(-3,3)
+          ylim(-3.5,3.5)
 
 
 
