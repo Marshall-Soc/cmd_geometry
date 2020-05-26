@@ -29,7 +29,7 @@
     # You can also download our RDS of the fastText Word Vectors
     # hosted on Google Drive (see https://googledrive.tidyverse.org/)
     temp <- tempfile()
-    drive_download(as_id("1crWGb3VrS6_2mTdJLKiq9Ymz9dC_7U7N"), path = temp, overwrite = TRUE)
+    drive_download(as_id("1DRBCzd_b_syadZiMxypUnwbNEcsDl2Wg"), path = temp, overwrite = TRUE)
     ft.wv <- readRDS(temp)
 
 # -----------------------------------------------------------------------------
