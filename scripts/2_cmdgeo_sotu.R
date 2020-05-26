@@ -1,13 +1,17 @@
+# ---------------------------------------------- #
+## Project Title: Concept Mover's Distance with Semantic Directions
+## 
+## Date: 2020-02-12 21:13:37
+## Author: Marshall A. Taylor and Dustin S. Stoltz
+# ---------------------------------------------- #
+
+
 #------------------------------------------------------------------------------
 # DATA
 #------------------------------------------------------------------------------
 
-    # sotu.texts <- quanteda.corpora::data_corpus_sotu$documents
-    # sotu.texts$docname <- sotu.texts$`_document`
-    # sotu.texts$`_document` <- NULL
     sotu.texts <- tidy(quanteda.corpora::data_corpus_sotu) %>% 
                   mutate(docname = paste0(President, "-", Date, delivery))
-
 
 #------------------------------------------------------------------------------
 # Create DTM
