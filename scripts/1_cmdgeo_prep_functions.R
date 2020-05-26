@@ -1,5 +1,5 @@
 # ---------------------------------------------- #
-## Project Title: Concept Movers' Distance with Cultural Dimensions
+## Project Title: Concept Mover's Distance with Semantic Directions
 ## 
 ## Date: 2020-02-12 21:13:37
 ## Author: Marshall A. Taylor and Dustin S. Stoltz
@@ -29,7 +29,7 @@
     # You can also download our RDS of the fastText Word Vectors
     # hosted on Google Drive (see https://googledrive.tidyverse.org/)
     temp <- tempfile()
-    drive_download(as_id("1Z0W9tXF459b6R_bS4zvOhbDNI_nLVpHr"), path = temp, overwrite = TRUE)
+    drive_download(as_id("1crWGb3VrS6_2mTdJLKiq9Ymz9dC_7U7N"), path = temp, overwrite = TRUE)
     ft.wv <- readRDS(temp)
 
 # -----------------------------------------------------------------------------
