@@ -1,5 +1,12 @@
+# ---------------------------------------------- #
+## Project Title: Concept Mover's Distance with Semantic Directions
+## 
+## Date: 2020-02-12 21:13:37
+## Author: Marshall A. Taylor and Dustin S. Stoltz
+# ---------------------------------------------- #
+
 ##-----------------------------------------------------------------------------
-# LOAD DATA
+# DATA
 ##-----------------------------------------------------------------------------
 
 play.meta <- read_csv("data/2_shakes_meta.csv")
