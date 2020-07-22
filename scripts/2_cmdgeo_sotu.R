@@ -66,13 +66,13 @@
     antonyms.6 <- cbind(additions.6, substracts.6)
     antonyms   <- cbind(additions, substracts)
 
-    cd.1 <- get_antodim(antonyms.1, ft.wv)
-    cd.2 <- get_antodim(antonyms.2, ft.wv)
-    cd.3 <- get_antodim(antonyms.3, ft.wv)
-    cd.4 <- get_antodim(antonyms.4, ft.wv)
-    cd.5 <- get_antodim(antonyms.5, ft.wv)
-    cd.6 <- get_antodim(antonyms.6, ft.wv)
-    cd.a <- get_antodim(antonyms, ft.wv)
+    cd.1 <- get_direction(antonyms.1, ft.wv)
+    cd.2 <- get_direction(antonyms.2, ft.wv)
+    cd.3 <- get_direction(antonyms.3, ft.wv)
+    cd.4 <- get_direction(antonyms.4, ft.wv)
+    cd.5 <- get_direction(antonyms.5, ft.wv)
+    cd.6 <- get_direction(antonyms.6, ft.wv)
+    cd.a <- get_direction(antonyms, ft.wv)
 
     cd <- rbind(cd.1, cd.2, cd.3, cd.4, cd.5, cd.6, cd.a)
 
