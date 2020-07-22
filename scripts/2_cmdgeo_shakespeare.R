@@ -53,7 +53,7 @@ play.text <- plays %>%
     substracts.sp <- c("life", "survivor", "birth", "living", "endure")
 
     antonyms.sp <- cbind(additions.sp, substracts.sp)
-    cd.sp <- get_antodim(antonyms.sp, ft.wv)
+    cd.sp <- get_direction(antonyms.sp, ft.wv)
 
 
   # Run CMD for concept words and cultural dimension
