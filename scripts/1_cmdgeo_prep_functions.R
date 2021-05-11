@@ -16,7 +16,7 @@
         gutenbergr, tidytext, 
         text2vec, CMDist, MASS,
         extrafont, ggplot2, 
-        textclean, tm, googledrive,
+        textclean, tm,
         ggpubr, ggrepel,
         install = TRUE)
 
@@ -26,10 +26,11 @@
     # https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M.vec.zip
     # ft.wv <- readRDS("")
 
-    # You can also download our RDS of the fastText Word Vectors
+    # You can also download our Rds of the fastText Word Vectors we have
     # hosted on Google Drive (see https://googledrive.tidyverse.org/)
     temp <- tempfile()
-    drive_download(as_id("1DRBCzd_b_syadZiMxypUnwbNEcsDl2Wg"), path = temp, overwrite = TRUE)
+    googledrive::drive_download(as_id("17H4GOGedeGo0urQdDC-4e5qWQMeWLpGG"), 
+                                path = temp, overwrite = TRUE)
     ft.wv <- readRDS(temp)
 
 # -----------------------------------------------------------------------------
